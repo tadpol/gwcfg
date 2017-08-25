@@ -1,0 +1,42 @@
+---
+- name: Install dependancies
+  apt: pkg={{ item }} state=installed update_cache=no
+  with_items:
+    - python
+
+- name: destination location exists
+  action: file path=/home/pi/gwe state=directory owner=pi group=pi mode=0755
+
+- name: Download GWE v1.5.12
+  get_url:
+      url: https://s3-us-west-2.amazonaws.com/exosite-client-downloads/gateway-engine-release-area/gmq-master/GatewayEngine.v1.5.12.tar.gz
+      dest: /home/pi/gwe
+      checksum: sha256:b2ff0fa39953d94503f2e16d59f90390d2006098af9f1ced252fcea50d20643e
+
+- name: Unpack it
+  unarchive:
+      remote_src: yes
+      src: /home/pi/gwe/GatewayEngine.v1.5.12.tar.gz
+      dest: /home/pi/gwe
+
+- name: Install GWE
+  args:
+      chdir: /home/pi/gwe/gateway-engine
+      creates: /usr/local/bin/gwe
+  command: ./install.sh
+
+- name: Set GWE ID to MAC
+  command: gwe --set-iface eth0 -d DEBUG
+
+- name: Set Product ID
+  command: gwe --set-product-id {{ product_id }}
+
+- name: Set GWE Host
+  command: gdc cfg set device host m2.exosite.io -f gwe
+
+- name: Startup GWE without a reboot.
+  systemd:
+      name: supervisor.service
+      state: started
+      enabled: True
+
