@@ -1,0 +1,16 @@
+---
+- name: install debian packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+    - git
+    - build-essential
+    - python-pip
+    - ruby-dev
+    - python-dev
+    - vim
+    - curl
+    - locales
+    - ntpdate
+    - avahi-utils
+    - python
+
