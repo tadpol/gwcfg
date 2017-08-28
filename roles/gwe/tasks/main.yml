@@ -25,14 +25,21 @@
       creates: /usr/local/bin/gwe
   command: ./install.sh
 
+- name: Get current GWE config
+  command: gwe --gateway-cfg
+  register: gwe_cfg
+
 - name: Set GWE ID to MAC
   command: gwe --set-iface eth0 -d DEBUG
+  when: "'iface = eth0' not in gwe_cfg.stdout"
 
 - name: Set Product ID
   command: gwe --set-product-id {{ product_id }}
+  when: "'model = ' not in gwe_cfg.stdout or 'vendor = ' not in gwe_cfg.stdout"
 
 - name: Set GWE Host
   command: gdc cfg set device host m2.exosite.io -f gwe
+  when: "'host = m2.exosite.io' not in gwe_cfg.stdout"
 
 - name: Startup GWE without a reboot.
   systemd:
