@@ -11,7 +11,7 @@
   get_url:
       url: https://s3-us-west-2.amazonaws.com/exosite-client-downloads/gateway-engine-release-area/gmq-master/GatewayEngine.v1.5.12.tar.gz
       dest: /home/pi/gwe
-      checksum: sha256:b2ff0fa39953d94503f2e16d59f90390d2006098af9f1ced252fcea50d20643e
+      checksum: sha256:746df2b812ad4e68652c93488bdfcedc19661c0204f884b53bc7a8d34b07a75e
 
 - name: Unpack it
   unarchive:
