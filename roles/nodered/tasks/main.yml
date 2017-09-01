@@ -1,0 +1,22 @@
+---
+- name: Install NodeRED
+  npm:
+    name: node-red
+    state: latest
+    global: yes
+
+# Setup user for NodeRed to run as.
+- name: Add NodeRED group
+  group:
+      name: nodered
+- name: Add NodeRED user
+  user:
+      name: nodered
+      append: yes
+      group: nodered
+      groups: dialout,i2c,spi
+
+# TODO: Add to systemd so node-red starts on boot.
+
+# TODO: Install some node-red modules into where node-red can manage them.
+#  /home/nodered/.node-red/ ?
