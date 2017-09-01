@@ -1,0 +1,6 @@
+---
+- name: Install Arduino Makefile
+  apt: pkg={{ item }} state=installed update_cache=no
+  with_items:
+    - arduino-mk
+
