@@ -15,6 +15,7 @@
       append: yes
       group: nodered
       groups: dialout,i2c,spi
+      shell: /usr/sbin/nologin
 
 - name: NodeRed Working dir exists
   file:
@@ -26,9 +27,7 @@
 
 - name: Copy systemd config for NodeRED
   copy: src=nodered.service dest=/lib/systemd/system/nodered.service
-  # FIXME: Is that the correct destination?
 
-# TODO: Add to systemd so node-red starts on boot.
 - name: Run NodeRED on boot
   systemd:
       name: nodered.service
@@ -40,23 +39,21 @@
 #   ?? How best to set passwords with ansible?
 
 
-# TODO: Install some node-red modules into where node-red can manage them.
-# ?? Need to start nodered to get this directory?
-#  /home/nodered/.node-red/ ?
-#- name: Install NodeRED modules
-#  npm:
-#      path: /home/nodered/.node-red
-#      state: latest
-#      name: {{item}}
-#      production: yes
-#  with_items:
-#    - node-red-node-serialport
-#    - node-red-contrib-exosite
-#    - node-red-dashboard
-#    - node-red-contrib-sensortag
-#    - node-red-contrib-bean
-#    - node-red-smooth
-#    - node-red-random
-#    - node-red-pidcontrol
+# Install some node-red modules into where node-red can manage them.
+- name: Install NodeRED modules
+  npm:
+      path: /home/nodered/.node-red
+      state: latest
+      name: "{{ item }}"
+      production: yes
+  with_items:
+    - node-red-node-serialport
+    - node-red-contrib-exosite
+    - node-red-dashboard
+    - node-red-contrib-sensortag
+    - node-red-contrib-bean
+    - node-red-node-smooth
+    - node-red-node-random
+    - node-red-node-pidcontrol
 
 
