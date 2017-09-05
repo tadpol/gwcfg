@@ -25,19 +25,21 @@
       group: nodered
       mode: 0750
 
-- name: Copy systemd config for NodeRED
-  copy: src=nodered.service dest=/lib/systemd/system/nodered.service
-
-- name: Run NodeRED on boot
-  systemd:
-      name: nodered.service
-      daemon_reload: yes
-      enabled: yes
-      state: started
-
 # TODO: Set admin interface password.
 #   ?? How best to set passwords with ansible?
-
+# - read into var.
+# - Inject new values
+# - write out to file.
+# OR
+# - a template and overwrite the default setting.js?
+#- name: Set NodeRED Admin Credit
+#  template:
+#    src: settings.j2
+#    dest: /home/nodered/.node-red/settings.js
+#    owner: nodered
+#    group: nodered
+#    mode: '0600'
+#    backup: yes
 
 # Install some node-red modules into where node-red can manage them.
 - name: Install NodeRED modules
@@ -47,13 +49,27 @@
       name: "{{ item }}"
       production: yes
   with_items:
-    - node-red-node-serialport
+  # - node-red-node-serialport
     - node-red-contrib-exosite
-    - node-red-dashboard
-    - node-red-contrib-sensortag
-    - node-red-contrib-bean
+      # FIXME: why isn't dashboard installing?
+  # - node-red-dashboard
+  # - node-red-contrib-sensortag
+  # - node-red-contrib-bean
     - node-red-node-smooth
     - node-red-node-random
     - node-red-node-pidcontrol
+  become: true
+  become_user: nodered
+# TODO: After this, reload/restart nodered to pickup the installed nodes.
+# Or can we hold off starting it until after this is done?
 
+- name: Copy systemd config for NodeRED
+  copy: src=nodered.service dest=/lib/systemd/system/nodered.service
+
+- name: Run NodeRED on boot
+  systemd:
+      name: nodered.service
+      daemon_reload: yes
+      enabled: yes
+      state: started
 
