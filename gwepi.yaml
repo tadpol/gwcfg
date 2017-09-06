@@ -1,0 +1,10 @@
+---
+- hosts: pies
+  remote_user: pi
+  become: yes
+  gather_facts: yes
+  roles:
+  - debian
+  - gwe
+# - firmata?
+
