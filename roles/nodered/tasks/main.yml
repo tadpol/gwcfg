@@ -49,15 +49,16 @@
       name: "{{ item }}"
       production: yes
   with_items:
-  # - node-red-node-serialport
     - node-red-contrib-exosite
-      # FIXME: why isn't dashboard installing?
-  # - node-red-dashboard
-  # - node-red-contrib-sensortag
-  # - node-red-contrib-bean
+    - node-red-dashboard
     - node-red-node-smooth
     - node-red-node-random
     - node-red-node-pidcontrol
+    - node-red-node-serialport
+  # These BLE items need .deb packages to be installed first.
+  # They should be a seperate role.
+  # - node-red-contrib-sensortag
+  # - node-red-contrib-bean
   become: true
   become_user: nodered
 # TODO: After this, reload/restart nodered to pickup the installed nodes.
