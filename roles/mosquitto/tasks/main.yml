@@ -1,0 +1,10 @@
+- name: Install Mosquitto
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - mosquitto
+
+- name: Set non-tsl to localhost only
+  lineinfile:
+      path: /etc/mosquitto/conf.d/local.conf
+      line: 'listener 1883 localhost'
+      create: yes
