@@ -52,6 +52,14 @@
     - node-red-node-pidcontrol
     - node-red-node-serialport
 
+# On BB, there is a nodeRed installed, we need to not use its service and socket
+- name: Unload old node-red systemd
+  systemd: name={{ item }} state=stopped enabled=no
+  with_items:
+      - node-red.service
+      - node-red.socket
+# when: on BB? How to know? TODO:
+
 # Now start NodeRED and have it start on boot.
 - name: Copy systemd config for NodeRED
   copy: src=nodered.service dest=/lib/systemd/system/nodered.service
