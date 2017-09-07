@@ -1,5 +1,4 @@
 ---
-handlers:
-    - name: restart nodered
-      systemd: name=nodered.service state=restarted
+- name: restart nodered
+  systemd: name=nodered.service state=restarted
 
