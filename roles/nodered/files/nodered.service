@@ -8,7 +8,7 @@ User=nodered
 Group=nodered
 WorkingDirectory=/home/nodered/.node-red
 Nice=5
-Environment="NODE_OPTIONS=--max_old_space_size=256"
+Environment="NODE_OPTIONS=--max_old_space_size=128"
 ExecStart=/usr/bin/env node-red-pi $NODE_OPTIONS $NODE_RED_OPTIONS
 KillSignal=SIGINT
 Restart=on-failure
