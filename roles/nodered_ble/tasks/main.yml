@@ -22,5 +22,6 @@
       - noble
       - node-red-contrib-sensortag
       - node-red-contrib-bean
-# TODO: tap something to restart/reload nodered.
+  notify:
+      - restart nodered
 
