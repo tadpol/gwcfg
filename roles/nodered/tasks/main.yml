@@ -42,6 +42,8 @@
       state: latest
       name: "{{ item }}"
       production: yes
+  become: true
+  become_user: nodered
   with_items:
     - node-red-contrib-exosite
     - node-red-dashboard
@@ -49,14 +51,8 @@
     - node-red-node-random
     - node-red-node-pidcontrol
     - node-red-node-serialport
-  # These BLE items need .deb packages to be installed first.
-  # They should be a seperate role.
-  # - node-red-contrib-sensortag
-  # - node-red-contrib-bean
-  become: true
-  become_user: nodered
 
-# Now start nodeRED and have it start on boot.
+# Now start NodeRED and have it start on boot.
 - name: Copy systemd config for NodeRED
   copy: src=nodered.service dest=/lib/systemd/system/nodered.service
 

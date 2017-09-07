@@ -1,0 +1,26 @@
+- name: Install platform packages for BLE
+  apt: pkg={{ item }} state=installed
+  with_items:
+      - bluetooth
+      - bluez
+      - libbluetooth-dev
+      - libudev-dev
+      - libcap2-bin # ???
+
+# Do we need this?
+# setcap cap_net_raw+eip $(eval readlink -f `which node`)
+
+- name: Install BLE NodeJS and NodeRED modules
+  npm:
+      path: /home/nodered/.node-red
+      state: latest
+      name: "{{ item }}"
+      production: yes
+  become: true
+  become_user: nodered
+  with_items:
+      - noble
+      - node-red-contrib-sensortag
+      - node-red-contrib-bean
+# TODO: tap something to restart/reload nodered.
+
