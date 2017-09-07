@@ -1,0 +1,28 @@
+---
+- hosts: BBW
+  become: yes
+  vars:
+    serial_ports: BB-UART1,BB-UART2
+  roles:
+  - debian
+  - nodered
+
+  tasks:
+  - name: Disable unwanted BeagleBone services
+    service: name={{ item }} state=stopped enabled=no
+    with_items:
+      - cloud9.socket
+      - cloud9.service
+      - bonescript.socket
+      - bonescript.service
+      - bonescript-autorun.service
+      - apache2.service
+
+  - name: Setup serial ports to be availible on reboot
+    lineinfile:
+      path: /etc/default/capemgr
+      line: "CAPE={{ serial_ports }}"
+      regexp: '^CAPE='
+
+
+#  vim: set et sw=2 ts=2 :
