@@ -26,7 +26,7 @@
       mode: 0750
 
 # Set admin interface password.
-- name: Set NodeRED Admin Credit
+- name: Set NodeRED Admin Creditials
   template:
     src: files/settings.j2
     dest: /home/nodered/.node-red/settings.js
@@ -51,6 +51,8 @@
     - node-red-node-random
     - node-red-node-pidcontrol
     - node-red-node-serialport
+    # NOTE: Most of the time, am needing to login and install serialport by hand.
+    # Do not know why.
 
 # On BB, there is a nodeRed installed, we need to not use its service and socket
 - name: Unload old node-red systemd
@@ -58,7 +60,7 @@
   with_items:
       - node-red.service
       - node-red.socket
-# when: on BB? How to know? TODO:
+  when: hardware_class == "beaglebone"
 
 # Now start NodeRED and have it start on boot.
 - name: Copy systemd config for NodeRED
