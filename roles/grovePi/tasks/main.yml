@@ -1,0 +1,20 @@
+---
+- name: Copy over hex file
+  copy:
+      src: grove_pi_firmware.hex
+      dest: /root/grove_pi_firmware.hex
+
+- name: Copy over GPIO programmer for AVRdude
+  copy:
+      src: avrdude.conf
+      dest: /root/avrdude.conf
+
+- name: Install GrovePi
+  args:
+      chdir: /root
+  command: |
+    avrdude -C +avrdude.conf -c linuxgpio -p m328p -U lfuse:w:0xFF:m
+    avrdude -C +avrdude.conf -c linuxgpio -p m328p -U hfuse:w:0xDA:m
+    avrdude -C +avrdude.conf -c linuxgpio -p m328p -U efuse:w:0x05:m
+    avrdude -C +avrdude.conf -c linuxgpio -p m328p -U flash:w:grove_pi_firmware.hex
+

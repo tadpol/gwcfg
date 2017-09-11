@@ -6,5 +6,6 @@
   roles:
   - debian
   - gwe
+  - grovePi
 # - firmata?
 
