@@ -8,3 +8,62 @@
       path: /etc/mosquitto/conf.d/local.conf
       line: 'listener 1883 localhost'
       create: yes
+  notify:
+      - restart mosquitto
+
+# Add TLS certs. (self signed for now)
+- name: Create Self Signed CA
+  when: mosquitto_self_signed
+  args:
+      chdir: /etc/mosquitto/certs
+  creates: /etc/mosquitto/certs/ca-key.pem
+  command: |
+      openssl req -x509 -nodes -days 3650 \
+      -subj "/C=US/ST=MN/L=Mpls/O=Exosite/CN=MosquittoCa" \
+      -newkey rsa:2048 -keyout ca-key.pem -out ca.pem
+
+- name: Create Server Certificate Request
+  when: mosquitto_self_signed
+  args:
+      chdir: /etc/mosquitto/certs
+  creates: /etc/mosquitto/certs/CSR.csr
+  command: |
+    openssl req -out CSR.csr -new \
+    -newkey rsa:2048 -nodes -keyout server-key.pem \
+        -subj "/C=US/ST=MN/L=Mpls/O=Exosite/CN=Mosquitto"
+
+- name: Sign Server Cert with Self-Signed CA
+  when: mosquitto_self_signed
+  args:
+      chdir: /etc/mosquitto/certs
+  creates: /etc/mosquitto/certs/server-signed.cer
+  command: |
+      openssl x509 -req -days 3650 \
+      -in CSR.csr -CA ca.pem -CAkey ca-key.pem \
+      -CAcreateserial -out server-signed.cer
+
+- name: Setup mosquitto to use Server cert
+  when: mosquitto_self_signed
+  blockinfile:
+      path: /etc/mosquitto/conf.d/selfsigned.conf
+      block: |
+          listener 8883
+          cafile /etc/mosquitto/certs/ca.pem
+          certfile /etc/mosquitto/certs/server-signed.cer
+          keyfile /etc/mosquitto/certs/server-key.pem
+      create: yes
+  notify:
+      - restart mosquitto
+
+# Will try Let's Encrypt some other time.
+# ./letsencrypt-auto certonly \
+#    --email alex@kritikal.org \
+#    --text \
+#    --authenticator manual \
+#    --work-dir /etc/mosquitto \
+#    --config-dir /etc/mosquitto \
+#    --logs-dir /etc/mosquitto auth \
+#    --cert-path /etc/mosquitto/certs/ \
+#    --chain-path /etc/mosquitto/chains/ \
+#    --csr /etc/mosquitto/domain.csr
+#
