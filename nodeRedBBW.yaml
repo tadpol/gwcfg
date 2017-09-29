@@ -3,6 +3,7 @@
   become: yes
   vars:
     serial_ports: BB-UART1,BB-UART2
+    mosquitto_self_signed: true
   roles:
   - debian
   - mosquitto

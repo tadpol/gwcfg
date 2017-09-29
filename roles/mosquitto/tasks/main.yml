@@ -1,3 +1,4 @@
+---
 - name: Install Mosquitto
   apt: pkg={{ item }} state=latest
   with_items:
@@ -16,7 +17,7 @@
   when: mosquitto_self_signed
   args:
       chdir: /etc/mosquitto/certs
-  creates: /etc/mosquitto/certs/ca-key.pem
+      creates: /etc/mosquitto/certs/ca-key.pem
   command: |
       openssl req -x509 -nodes -days 3650 \
       -subj "/C=US/ST=MN/L=Mpls/O=Exosite/CN=MosquittoCa" \
@@ -26,7 +27,7 @@
   when: mosquitto_self_signed
   args:
       chdir: /etc/mosquitto/certs
-  creates: /etc/mosquitto/certs/CSR.csr
+      creates: /etc/mosquitto/certs/CSR.csr
   command: |
     openssl req -out CSR.csr -new \
     -newkey rsa:2048 -nodes -keyout server-key.pem \
@@ -36,7 +37,7 @@
   when: mosquitto_self_signed
   args:
       chdir: /etc/mosquitto/certs
-  creates: /etc/mosquitto/certs/server-signed.cer
+      creates: /etc/mosquitto/certs/server-signed.cer
   command: |
       openssl x509 -req -days 3650 \
       -in CSR.csr -CA ca.pem -CAkey ca-key.pem \
