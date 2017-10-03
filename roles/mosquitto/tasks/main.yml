@@ -13,6 +13,7 @@
       - restart mosquitto
 
 # Add TLS certs. (self signed for now)
+# This requires using --insecure to allow the self-signed cert file.
 - name: Create Self Signed CA
   when: mosquitto_self_signed
   args:
@@ -55,6 +56,26 @@
       create: yes
   notify:
       - restart mosquitto
+
+- name: Set most files unreadable
+  when: mosquitto_self_signed
+  file:
+      path: /etc/mosquitto/certs/{{ item }}
+      mode: 0600
+  with_items:
+      - ca-key.pem
+      - ca.srl
+      - CSR.csr
+      - server-key.pem
+
+- name: Set public certs to be readable
+  when: mosquitto_self_signed
+  file:
+      path: /etc/mosquitto/certs/{{ item }}
+      mode: 0644
+  with_items:
+      - ca.pem
+      - server-signed.cer
 
 # Will try Let's Encrypt some other time.
 # ./letsencrypt-auto certonly \
