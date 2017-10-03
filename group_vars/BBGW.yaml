@@ -1,0 +1,5 @@
+---
+ansible_user: debian
+hardware_class: beaglebone
+hardware_sub: green-wireless
+
