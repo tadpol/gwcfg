@@ -4,6 +4,9 @@
   with_items:
     - mosquitto
 
+- name: Enable mosquitto service
+  service: name=mosquitto state=started enabled=yes
+
 - name: Set non-tsl to localhost only
   lineinfile:
       path: /etc/mosquitto/conf.d/local.conf
