@@ -51,8 +51,11 @@
     - node-red-node-random
     - node-red-node-pidcontrol
     - node-red-node-serialport
+    - node-red-node-rbe
     # NOTE: Most of the time, am needing to login and install serialport by hand.
     # Do not know why.
+  notify:
+      - restart nodered
 
 # On BB, there is a nodeRed installed, we need to not use its service and socket
 - name: Unload old node-red systemd
