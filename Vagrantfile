@@ -9,11 +9,16 @@ Vagrant.configure("2") do |config|
   config.vm.network "public_network"
 
   config.vm.provision "shell", inline: <<-SHELL
-    echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' >> /etc/apt/sources.list
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+    if [ ! -f /etc/apt/sources.list.d/ansible.list ]; then
+      echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' >> /etc/apt/sources.list.d/ansible.list
+      apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+    fi
+    apt-get update
+    apt-get install -y --allow-unauthenticated ansible
+  SHELL
+  config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt-get install -y dirmngr avahi-utils zsh
-    apt-get install -y --allow-unauthenticated ansible
     chsh -s /usr/bin/zsh vagrant
   SHELL
   config.vm.provision "file", source: "~/.zshrc", destination: "$HOME/.zshrc"
