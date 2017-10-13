@@ -1,0 +1,41 @@
+---
+- name: Install packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+      - tightvncserver
+      - netatalk
+      - avahi-daemon
+
+# Have tight launch on boot
+- name: Set VNC password
+  become: true
+  become_user: pi
+  shell: 'echo sharkpi8 | vncpasswd -f > $HOME/.vnc/passwd'
+
+- name: VNC on boot
+  systemd: name=tightvncserver.service state=start enabled=yes
+
+# Adding stuff to make it seemless with Macos Screen Sharing.
+- name: Bonjour afp
+  copy:
+    src: afpd.service
+    dest: /etc/avahi/services/afpd.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+      - restart avahi
+
+- name: Bonjour VNC
+  copy:
+    src: rfb.service
+    dest: /etc/avahi/services/rfb.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+      - restart avahi
+
+...
+
+

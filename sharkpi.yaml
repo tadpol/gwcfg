@@ -1,0 +1,20 @@
+# Build up a Pi with WireShark and VPN and as an Access Point.
+
+---
+- hosts: sharkpies
+  remote_user: pi
+  become: yes
+  roles:
+  - debian
+  - AccessPoint
+  - WireShark
+  - VNC
+
+  tasks:
+      - hostname: name=sharkpi
+      - lineinfile:
+          path: /ets/hosts
+          line: '127.0.0.1   sharkpi'
+
+...
+

@@ -1,0 +1,115 @@
+---
+- name: Install packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+      - hostapd
+      - isc-dhcp-server
+      - iptables-persistent
+
+- name: Remove WPA supplicant
+  apt: pkg=wpasupplicant state=absent
+
+- name: Setup DHCP Server; drop domain-name
+  replace:
+      path: /etc/dhcp/dhcpd.conf
+      regexp: '^(option domain-name\s.*)$'
+      line: '#\1'
+
+- name: Setup DHCP Server; authoritative
+  lineinfile:
+      path: /etc/dhcp/dhcpd.conf
+      regexp: '^#authoritative;'
+      line: 'authoritative;'
+
+- name: Setup DHCP Server; subnet
+  blockinfile:
+      path: /etc/dhcp/dhcpd.conf
+      block: |
+          subnet 192.168.42.0 netmask 255.255.255.0 {
+            range 192.168.42.10 192.168.42.50;
+            option broadcast-address 192.168.42.255;
+            option routers 192.168.42.1;
+            default-lease-time 600;
+            max-lease-time 7200;
+            option domain-name "local";
+            option domain-name-servers 8.8.8.8, 8.8.4.4;
+          }
+
+- name: Set interfaces for DHCP
+  replace:
+      path: /etc/default/isc-dhcp-server
+      regexp: '^INTERFACES(|v4|v6)='
+      line: 'INTERFACES\1="wlan0"'
+
+- name: Stop wlan0
+  command: ifdown wlan0
+
+- name: No Auto wlan0
+  lineinfile:
+      path: /etc/network/interfaces
+      regexp: ^'auto wlan0'
+      state: absent
+
+- name: Static IP for wlan0
+  blockinfile:
+      path: /etc/network/interfaces
+      insertafter: 'allow-hotplug wlan0'
+      block: |
+          iface wlan0 inet static
+            address 192.168.42.1
+            netmask 255.255.255.0
+  notify:
+      - reboot
+# ?? set the IP right now???
+# ifconfig wlan0 192.168.42.1
+
+- name: Setup AP config
+  blockinfile:
+      path: /etc/hostapd/hostapd.conf
+      create: yes
+      block: |
+          interface=wlan0
+          #driver=rtl871xdrv  Assuming PI3
+          ssid=sharkpi
+          country_code=US
+          hw_mode=g
+          channel=6
+          macaddr_acl=0
+          auth_algs=1
+          ignore_broadcast_ssid=0
+          wpa=2
+          wpa_passphrase=sharkpi
+          wpa_key_mgmt=WPA-PSK
+          wpa_pairwise=CCMP
+          wpa_group_rekey=86400
+          ieee80211n=1
+          wme_enabled=1
+
+- name: Use AP cfg
+  lineinfile:
+      path: /etc/default/hostapd
+      insertafter: '#DAEMON_CONF='
+      line: 'DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+
+- name: Use AP Daemon cfg
+  lineinfile:
+      path: /etc/init.d/hostapd
+      line: 'DAEMON_CONF=/etc/hostapd/hostapd.conf'
+      regexp: '^DAEMON_CONF='
+
+- name: Turn on NAT
+  lineinfile:
+      path: /etc/sysctl.conf
+      regexp: '^net.ipv4.ip_forward='
+      line: 'net.ipv4.ip_forward=1'
+  notify:
+      - reboot
+
+- name: Setup iptables for NAT
+  shell: |
+    echo 1 > /proc/sys/net/ipv4/ip_forward
+    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+    iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+    iptables-save > /etc/iptables/rules.v4
+

@@ -1,0 +1,7 @@
+---
+- name: restart avahi
+  systemd: name=avahi-daemon.service state=restarted
+
+- name: restart vnc
+  systemd: name=tightvncserver.service state=restarted
+
