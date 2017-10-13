@@ -13,12 +13,12 @@
   replace:
       path: /etc/dhcp/dhcpd.conf
       regexp: '^(option domain-name\s.*)$'
-      line: '#\1'
+      replace: '#\1'
 
 - name: Setup DHCP Server; authoritative
   lineinfile:
       path: /etc/dhcp/dhcpd.conf
-      regexp: '^#authoritative;'
+      regexp: '^#?authoritative;'
       line: 'authoritative;'
 
 - name: Setup DHCP Server; subnet
@@ -38,8 +38,8 @@
 - name: Set interfaces for DHCP
   replace:
       path: /etc/default/isc-dhcp-server
-      regexp: '^INTERFACES(|v4|v6)='
-      line: 'INTERFACES\1="wlan0"'
+      regexp: '^INTERFACES(|v4|v6)=(.*)'
+      replace: 'INTERFACES\1="wlan0"'
 
 - name: Stop wlan0
   command: ifdown wlan0
@@ -47,7 +47,7 @@
 - name: No Auto wlan0
   lineinfile:
       path: /etc/network/interfaces
-      regexp: ^'auto wlan0'
+      regexp: '^auto wlan0'
       state: absent
 
 - name: Static IP for wlan0
@@ -60,13 +60,12 @@
             netmask 255.255.255.0
   notify:
       - reboot
-# ?? set the IP right now???
-# ifconfig wlan0 192.168.42.1
 
 - name: Setup AP config
   blockinfile:
       path: /etc/hostapd/hostapd.conf
       create: yes
+      # TODO: ssid and password as variables.
       block: |
           interface=wlan0
           #driver=rtl871xdrv  Assuming PI3
@@ -112,4 +111,5 @@
     iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
     iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
     iptables-save > /etc/iptables/rules.v4
+# TODO: don't run if....
 
