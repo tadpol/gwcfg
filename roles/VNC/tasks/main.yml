@@ -17,8 +17,7 @@
 - name: Set VNC password
   become: true
   become_user: pi
-  # TODO: password is a var
-  shell: 'echo sharkpi8 | vncpasswd -f > /home/pi/.vnc/passwd'
+  shell: 'echo {{ vnc_password }} | vncpasswd -f > /home/pi/.vnc/passwd'
   args:
       creates: /home/pi/.vnc/passwd
 
