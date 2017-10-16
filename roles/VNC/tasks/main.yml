@@ -10,8 +10,8 @@
   file:
       path: /home/pi/.vnc
       state: directory
-      owner: nodered
-      group: nodered
+      owner: pi
+      group: pi
       mode: 0700
 
 - name: Set VNC password
