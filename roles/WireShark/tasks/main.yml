@@ -1,8 +1,17 @@
 ---
 - name: Install packages
-  apt: pkg={{ item }} state=installed update_cache=yes
+  apt: pkg={{ item }} state=installed
   with_items:
+      - etherpuppet
+      - horst
+      - ostinato
+      - packeth
+      - pcapfix
+      - tcpdump
+      - tcpxtract
+      - tshark
       - wireshark-qt
+
 
 ...
 
