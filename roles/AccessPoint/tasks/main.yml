@@ -65,11 +65,9 @@
   blockinfile:
       path: /etc/hostapd/hostapd.conf
       create: yes
-      # TODO: ssid and password as variables.
       block: |
           interface=wlan0
-          #driver=rtl871xdrv  Assuming PI3
-          ssid=sharkpi
+          ssid={{ AP_SSID }}
           country_code=US
           hw_mode=g
           channel=6
@@ -77,7 +75,7 @@
           auth_algs=1
           ignore_broadcast_ssid=0
           wpa=2
-          wpa_passphrase=sharkpi8
+          wpa_passphrase={{ AP_PASSWD }}
           wpa_key_mgmt=WPA-PSK
           wpa_pairwise=CCMP
           wpa_group_rekey=86400
