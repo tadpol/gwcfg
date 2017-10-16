@@ -6,20 +6,19 @@
       - netatalk
       - avahi-daemon
 
+# Create directory in {{remote_user}}'s HOME as {{remote_user}}
 - name: VNC user directory exists
+  become: no
   file:
-      path: /home/pi/.vnc
+      path: .vnc
       state: directory
-      owner: pi
-      group: pi
       mode: 0700
 
 - name: Set VNC password
-  become: true
-  become_user: pi
-  shell: 'echo {{ vnc_password }} | vncpasswd -f > /home/pi/.vnc/passwd'
+  become: no
+  shell: 'echo {{ vnc_password }} | vncpasswd -f > .vnc/passwd'
   args:
-      creates: /home/pi/.vnc/passwd
+      creates: .vnc/passwd
 
 - name: VNC on boot
   systemd: name=tightvncserver.service state=started enabled=yes
