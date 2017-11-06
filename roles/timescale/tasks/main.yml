@@ -1,0 +1,29 @@
+---
+- name: Add Backports
+  apt_repository:
+      repo: deb http://ftp.debian.org/debian jessie-backports main
+
+- name: Install Postgres
+  apt: pkg={{ item }} state=latest
+  with_items:
+      - cmake
+      - postgresql-9.6
+      - postgresql-contrib-9.6
+      - postgresql-server-dev-9.6
+#     - postgresql-9.6-postgis-2.3
+#     - postgis
+
+#- name: Add TimescaleDB repos
+#  apt_repository:
+#      repo: 'ppa:timescale/timescaledb-ppa'
+## XXX will this work for arm? Nope.
+## or will we need to try from source? yep.
+##
+#- name: Install TimescaleDB
+#  apt: pkg={{ item }} state=latest update_cache=yes
+#  with_items:
+#    - timescaledb
+#      # other postgres tools?
+#      # postgis ?
+
+
