@@ -18,7 +18,10 @@ Vagrant.configure("2") do |config|
   SHELL
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y dirmngr avahi-utils zsh
+    apt-get install -y dirmngr avahi-utils
+  SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get install -y zsh zsh-antigen git vim cscope exuberant-ctags
     chsh -s /usr/bin/zsh vagrant
   SHELL
   config.vm.provision "file", source: "~/.zshrc", destination: "$HOME/.zshrc"
