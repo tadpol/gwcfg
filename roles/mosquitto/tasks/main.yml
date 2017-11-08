@@ -71,6 +71,14 @@
       - CSR.csr
       - server-key.pem
 
+- name: Server key needs to be readable by mosquitto daemon
+  when: mosquitto_self_signed
+  file:
+      path: /etc/mosquitto/certs/{{ item }}
+      owner: mosquitto
+  with_items:
+      - server-key.pem
+
 - name: Set public certs to be readable
   when: mosquitto_self_signed
   file:
