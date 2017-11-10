@@ -2,7 +2,11 @@
 - hosts: pies
   remote_user: pi
   become: yes
+  vars:
+    mosquitto_self_signed: true
   roles:
   - debian
   - nodered
+  - grovePi
+  - mosquitto
 
