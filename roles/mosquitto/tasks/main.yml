@@ -88,9 +88,26 @@
       - ca.pem
       - server-signed.cer
 
+- name: Add TLS-MQTT to mDNS
+  when: mosquitto_self_signed
+  blockinfile:
+      path: /etc/avahi/services/mosquitto.service
+      block: |
+        <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+        <service-group>
+         <name replace-wildcards="yes">Mosquitto MQTT server on %h</name>
+          <service>
+           <type>_mqtt._tcp</type>
+           <port>8883</port>
+           <txt-record>info=MQTT</txt-record>
+          </service>
+        </service-group>
+      marker: <!-- {mark} ANSIBLE MANAGED BLOCK -->
+      create: yes
+
 # Will try Let's Encrypt some other time.
 # ./letsencrypt-auto certonly \
-#    --email alex@kritikal.org \
+#    --email --@--.-- \
 #    --text \
 #    --authenticator manual \
 #    --work-dir /etc/mosquitto \
