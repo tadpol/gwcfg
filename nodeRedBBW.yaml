@@ -3,7 +3,7 @@
   become: yes
   vars:
     serial_ports: BB-UART1,BB-UART2
-    mosquitto_self_signed: false  # The conf section of this causes the daemon to fail silently.
+    mosquitto_self_signed: true
   roles:
   - debian
   - mosquitto
@@ -20,6 +20,13 @@
       - bonescript.service
       - bonescript-autorun.service
       - apache2.service
+    when: hardware_class == "beaglebone"
+
+  - name: Disable cloud9 advertisement on mDNS
+    command: mv cloud9.service cloud9.dis-service
+    args:
+      chdir: /etc/avahi/services
+      removes: cloud9.service
     when: hardware_class == "beaglebone"
 
   - name: Setup serial ports to be availible on reboot
