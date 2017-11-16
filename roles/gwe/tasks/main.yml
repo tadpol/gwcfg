@@ -7,16 +7,16 @@
 - name: destination location exists
   action: file path=/home/pi/gwe state=directory owner=pi group=pi mode=0755
 
-- name: Download GWE v1.5.12
+- name: Download GWE v1.5.23
   get_url:
-      url: https://s3-us-west-2.amazonaws.com/exosite-client-downloads/gateway-engine-release-area/gmq-master/GatewayEngine.v1.5.12.tar.gz
+      url: https://s3-us-west-2.amazonaws.com/exosite-client-downloads/gateway-engine-release-area/gmq-master/GatewayEngine.v1.5.23.tar.gz
       dest: /home/pi/gwe
-      checksum: sha256:746df2b812ad4e68652c93488bdfcedc19661c0204f884b53bc7a8d34b07a75e
+      checksum: sha256:78d8600ab4c2f9061c82e1523019155a96620af5db2af1f7f3b8edd9ea12949a
 
 - name: Unpack it
   unarchive:
       remote_src: yes
-      src: /home/pi/gwe/GatewayEngine.v1.5.12.tar.gz
+      src: /home/pi/gwe/GatewayEngine.v1.5.23.tar.gz
       dest: /home/pi/gwe
 
 - name: Install GWE
@@ -35,7 +35,7 @@
 
 - name: Set Product ID
   command: gwe --set-product-id {{ product_id }}
-  when: "'model = ' not in gwe_cfg.stdout or 'vendor = ' not in gwe_cfg.stdout"
+  when: "'model = \'\'' in gwe_cfg.stdout or 'vendor = \'\'' in gwe_cfg.stdout"
 
 - name: Set GWE Host
   command: gdc cfg set device host m2.exosite.io -f gwe
