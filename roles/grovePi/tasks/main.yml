@@ -18,3 +18,7 @@
     avrdude -C +avrdude.conf -c linuxgpio -p m328p -U efuse:w:0x05:m
     avrdude -C +avrdude.conf -c linuxgpio -p m328p -U flash:w:grove_pi_firmware.hex
 
+# This only updates the firmware.  There is a bunch of other things that need to
+# happen on the Pi to support a GrovePi.
+# Should consider calling the script the provide.
+#
