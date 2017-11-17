@@ -14,3 +14,9 @@
     - avahi-utils
     - python
 
+- name: Pi specific packages
+  when: hardware_class == "raspberrypi"
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - wiringpi
+
