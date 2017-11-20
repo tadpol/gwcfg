@@ -1,23 +1,23 @@
 ---
-- name: Add Backports
-  apt_repository:
-      repo: deb http://ftp.debian.org/debian jessie-backports main
 
 - name: Install Postgres
   apt: pkg={{ item }} state=latest
   with_items:
       - cmake
+      - postgresql-common
+      - postgresql-client-9.6
       - postgresql-9.6
       - postgresql-contrib-9.6
       - postgresql-server-dev-9.6
 #     - postgresql-9.6-postgis-2.3
 #     - postgis
 
+
 #- name: Add TimescaleDB repos
 #  apt_repository:
 #      repo: 'ppa:timescale/timescaledb-ppa'
 ## XXX will this work for arm? Nope.
-## or will we need to try from source? yep.
+## or will we need to try from source? yep. <======
 ##
 #- name: Install TimescaleDB
 #  apt: pkg={{ item }} state=latest update_cache=yes
@@ -26,4 +26,33 @@
 #      # other postgres tools?
 #      # postgis ?
 
+
+- name: Checkout TimescaleDB
+  git:
+      repo: https://github.com/timescale/timescaledb.git
+      dest: /root/timescaledb
+      version: 0.6.1
+
+- name: Build TimescaleDB
+  command: make
+  args:
+      chdir: /root/timescaledb
+      creates: /root/timescaledb/timescaledb.so
+
+- name: Install TimescaleDB
+  command: make install
+  args:
+      chdir: /root/timescaledb
+
+- name: Load TimescaleDB
+  lineinfile:
+      path: /etc/postgresql/9.6/main/postgresql.conf
+      regexp: '^#?shared_preload_libraries'
+      line: "shared_preload_libraries = 'timescaledb'"
+
+- name: Restart PostgreSQL
+  systemd:
+      state: restarted
+      daemon_reload: yes
+      name: postgresql
 
