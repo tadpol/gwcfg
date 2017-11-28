@@ -3,6 +3,7 @@
   remote_user: pi
   become: yes
   roles:
-  - debian
-  - nodered
+      - debian
+      - nodered
+      - timescale
 
