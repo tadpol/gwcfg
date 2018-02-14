@@ -53,7 +53,7 @@
     - node-red-node-serialport
     - node-red-node-rbe
     # NOTE: Most of the time, am needing to login and install serialport by hand.
-    # Do not know why.
+    # Do not know why. Guessing is it --unsafe-perms
   notify:
       - restart nodered
 
