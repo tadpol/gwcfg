@@ -65,6 +65,12 @@
       - node-red.socket
   when: hardware_class == "beaglebone"
 
+- name: Remove bb-node-red-installer
+  apt: pkg={{ item }} state=absent
+  with_items:
+      - bb-node-red-installer
+  when: hardware_class == "beaglebone"
+
 # Now start NodeRED and have it start on boot.
 - name: Copy systemd config for NodeRED
   copy: src=nodered.service dest=/lib/systemd/system/nodered.service
