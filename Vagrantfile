@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: 'virtualbox'
 
+  # Note: Bridging over WiFi on a Mac host doesn't work.  It needs to be a wired interface.
   config.vm.network "public_network"
 
   config.vm.provision "shell", inline: <<-SHELL
