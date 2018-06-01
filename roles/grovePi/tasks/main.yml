@@ -22,3 +22,57 @@
 # happen on the Pi to support a GrovePi.
 # Should consider calling the script the provide.
 #
+
+- name: Install Debian packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+	- python-pip
+    - git
+    - libi2c-dev
+    - python-serial
+    - i2c-tools
+    - python-smbus
+    - minicom
+    - python-dev
+	- python-rpi.gpio
+    - python-scipy
+
+- name: Install Python packages
+    pip: name={{ item }}
+    with_items:
+	  - RPi.GPIO
+      - numpy
+
+- name: Grab GrovePi Repo for examples scripts
+  git:
+    repo: https://github.com/DexterInd/GrovePi.git
+    dest: /home/pi/Dexter/GrovePi
+
+# TODO: Add I2C and SPI modules to kernel (also remove from blacklist?) :: i2c-dev i2c-bcm2708 spi-dev
+- name: Remove Modules from Blacklist
+  kernel_blacklist:
+    blacklist_file: /etc/modprobe.d/raspi-blacklist.conf.bak
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - i2c-bcm2708
+    - spi-bcm2708
+
+# Does this modify /etc/modules ? Or do I need a seperate step?
+- name: Add modules
+  modprobe: name={{ item }}
+  with_items:
+    - i2c-dev
+    - i2c-bcm2708
+    - spi-dev
+
+# TODO: add "dtparam=i2c1=on$" & "dtparam=i2c_arm=on$" to /boot/config.txt
+
+- name: Add pi to i2c group
+  user:
+    name: pi
+    groups: i2c
+    append: yes
+
+
+
