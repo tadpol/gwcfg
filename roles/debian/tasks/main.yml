@@ -2,17 +2,17 @@
 - name: install debian packages
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
-    - git
+    - avahi-utils
     - build-essential
-    - python-pip
-    - ruby-dev
-    - python-dev
-    - vim
     - curl
+    - git
     - locales
     - ntpdate
-    - avahi-utils
     - python
+    - python-dev
+    - python-pip
+    - ruby-dev
+    - vim
 
 - name: Pi specific packages
   when: hardware_class == "raspberrypi"

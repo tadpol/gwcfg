@@ -23,19 +23,17 @@
 # Should consider calling the script the provide.
 #
 
+# In addition to what the Debian task installed.
 - name: Install Debian packages
-  apt: pkg={{ item }} state=installed update_cache=yes
+  apt: pkg={{ item }} state=installed
   with_items:
-	- python-pip
-    - git
-    - libi2c-dev
-    - python-serial
     - i2c-tools
-    - python-smbus
+    - libi2c-dev
     - minicom
-    - python-dev
-	- python-rpi.gpio
+	  - python-rpi.gpio
     - python-scipy
+    - python-serial
+    - python-smbus
 
 - name: Install Python packages
     pip: name={{ item }}
