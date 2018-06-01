@@ -2,7 +2,7 @@
 - hosts: BBW
   become: yes
   vars:
-    serial_ports: BB-UART1,BB-UART2
+    serial_ports: BB-UART1,BB-UART2,BB-UART4
     mosquitto_self_signed: true
   roles:
   - debian
