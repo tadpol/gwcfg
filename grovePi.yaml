@@ -6,7 +6,5 @@
     mosquitto_self_signed: true
   roles:
   - debian
-  - nodered
-  - mosquitto
-  - timescale
+  - grovePi
 
