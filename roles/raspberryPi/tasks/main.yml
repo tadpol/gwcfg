@@ -1,0 +1,35 @@
+---
+
+- name: Turn off serial console in boot cmdline
+  lineinfile:
+    path: /boot/cmdline.txt
+    backrefs: yes
+    regexp: '(?P<before>.*) console=serial0,115200 (?<after>.*)'
+    line: '\g<before> \g<after>'
+
+- name: Disable serial port GETTY (B3)
+  when: hardware_class == "raspberrypi" and hardware_sub == "B3"
+  systemd:
+    state: stopped
+    enabled: no
+    name: serial-getty@ttyS0.service
+
+- name: Disable serial port GETTY (<B3)
+  when: hardware_class == "raspberrypi" and hardware_sub == "B2"
+  systemd:
+    state: stopped
+    enabled: no
+    name: serial-getty@ttyAMA0.service
+
+- name: Enable UART
+  lineinfile:
+    path: /boot/config.txt
+    regexp: "^#?enable_uart="
+    line: "enable_uart=1"
+
+- name: Swap ports
+  lineinfile:
+    path: /boot/config.txt
+    regexp: "^#?dtoverlay=pi3-miniuart-bt"
+    line: "dtoverlay=pi3-miniuart-bt"
+
