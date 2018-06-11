@@ -2,6 +2,7 @@
 - name: install debian packages
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
+    - acl # Ansible uses setfacl
     - git
     - build-essential
     - python-pip
