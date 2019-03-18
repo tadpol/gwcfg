@@ -29,7 +29,7 @@
       removes: cloud9.service
     when: hardware_class == "beaglebone"
 
-  - name: Setup serial ports to be availible on reboot
+  - name: Setup serial ports to be available on reboot
     lineinfile:
       path: /etc/default/capemgr
       line: "CAPE={{ serial_ports }}"
