@@ -1,8 +1,9 @@
 ---
 - name: Install Mosquitto
-  apt: pkg={{ item }} state=latest
-  with_items:
-    - mosquitto
+  apt:
+    state: latest
+    pkg:
+      - mosquitto
 
 - name: Enable mosquitto service
   service: name=mosquitto state=started enabled=yes

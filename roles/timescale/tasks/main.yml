@@ -1,8 +1,9 @@
 ---
 
 - name: Install Postgres
-  apt: pkg={{ item }} state=latest
-  with_items:
+  apt:
+    state: latest
+    pkg:
       - cmake
       - postgresql-common
       - postgresql-client-9.6

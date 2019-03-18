@@ -1,23 +1,26 @@
 ---
 - name: install debian packages
-  apt: pkg={{ item }} state=installed update_cache=yes
-  with_items:
-    - acl # Ansible uses setfacl
-    - git
-    - build-essential
-    - python-pip
-    - ruby-dev
-    - python-dev
-    - vim
-    - curl
-    - locales
-    - ntpdate
-    - avahi-utils
-    - python
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - acl # Ansible uses setfacl
+      - git
+      - build-essential
+      - python-pip
+      - ruby-dev
+      - python-dev
+      - vim
+      - curl
+      - locales
+      - ntpdate
+      - avahi-utils
+      - python
 
 - name: Pi specific packages
   when: hardware_class == "raspberrypi"
-  apt: pkg={{ item }} state=installed
-  with_items:
-    - wiringpi
+  apt:
+    state: present
+    pkg:
+      - wiringpi
 

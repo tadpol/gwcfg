@@ -1,6 +1,6 @@
 - name: Install platform packages for BLE
-  apt: pkg={{ item }} state=installed
-  with_items:
+  apt:
+    pkg:
       - bluetooth
       - bluez
       - libbluetooth-dev

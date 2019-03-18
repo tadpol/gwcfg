@@ -1,7 +1,8 @@
 ---
 - name: Install packages
-  apt: pkg={{ item }} state=installed update_cache=yes
-  with_items:
+  apt:
+    update_cache: yes
+    pkg:
       - tightvncserver
       - netatalk
       - avahi-daemon

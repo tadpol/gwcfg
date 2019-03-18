@@ -11,8 +11,9 @@
       - deb-src https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main
 
 - name: Install NodeJS 8
-  apt: pkg={{ item }} state=latest
-  with_items:
-    - nodejs
-    - build-essential
+  apt:
+    state: latest
+    pkg:
+      - nodejs
+      - build-essential
 

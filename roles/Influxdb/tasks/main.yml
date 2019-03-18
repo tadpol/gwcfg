@@ -10,8 +10,9 @@
     - deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} stable
 
 - name: Install InfluxDB
-  apt: pkg={{ item }} state=latest
-  with_items:
-    - influxdb
+  apt:
+    state: latest
+    pkg:
+      - influxdb
 
 

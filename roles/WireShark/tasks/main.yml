@@ -1,7 +1,7 @@
 ---
 - name: Install packages
-  apt: pkg={{ item }} state=installed
-  with_items:
+  apt:
+    pkg:
       - etherpuppet
       - horst
       - ostinato
