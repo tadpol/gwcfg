@@ -1,0 +1,14 @@
+---
+- hosts: homepie
+  remote_user: pi
+  become: yes
+  vars:
+    mosquitto_self_signed: true
+  roles:
+  - debian
+  - raspberryPi
+  - mosquitto
+  - nodered
+  - Influxdb
+  # - timescale
+
