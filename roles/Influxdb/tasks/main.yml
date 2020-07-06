@@ -4,7 +4,7 @@
     url: https://repos.influxdata.com/influxdb.key
     state: present
 
-- name: Add InfluxDB repos
+- name: Add InfluxDB repositories
   apt_repository: repo={{item}}
   with_items:
     - deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} stable
@@ -15,4 +15,9 @@
     pkg:
       - influxdb
 
-
+- name: Run Influx on boot
+  systemd:
+      name: influxdb.service
+      daemon_reload: yes
+      enabled: yes
+      state: started
