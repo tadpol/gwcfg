@@ -10,5 +10,4 @@
   - mosquitto
   - nodered
   - Influxdb
-  # - timescale
-
+  - grafana

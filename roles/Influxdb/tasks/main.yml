@@ -5,9 +5,8 @@
     state: present
 
 - name: Add InfluxDB repositories
-  apt_repository: repo={{item}}
-  with_items:
-    - deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} stable
+  apt_repository:
+    repo: deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} stable
 
 - name: Install InfluxDB
   apt:
@@ -21,3 +20,5 @@
       daemon_reload: yes
       enabled: yes
       state: started
+
+# ??? Setup a default DB and add a default retention to it?
