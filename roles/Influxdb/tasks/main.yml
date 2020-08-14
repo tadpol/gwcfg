@@ -22,3 +22,16 @@
       state: started
 
 # ??? Setup a default DB and add a default retention to it?
+
+# We can write data to specific retentions.  So the onewire needs to be writing into the a_week.
+# CREATE DATABASE "sunflowers";
+#
+# CREATE RETENTION POLICY "a_week" ON "sunflowers" DURATION 1w REPLICATION 1;
+# CREATE RETENTION POLICY "a_year" ON "sunflowers" DURATION 52w REPLICATION 1 DEFAULT;
+#
+# CREATE CONTINUOUS QUERY "cq_5m_ow" ON "sunflowers" BEGIN
+#   SELECT mean(*)
+#   INTO "a_year"."ds_onewire"
+#   FROM "a_week"."onewire"
+#   GROUP BY time(5m),*
+# END
