@@ -5,4 +5,4 @@ docker run --rm -it \
   -v $(pwd):/ansible_playbooks \
   -w /ansible_playbooks \
   -v /var/log/ansible/ansible.log \
-  tadpol/ansible-playbook "$@"
+  local/ansible-playbook "$@"

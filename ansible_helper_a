@@ -6,4 +6,4 @@ docker run --rm -it \
   -w /ansible_playbooks \
   -v /var/log/ansible/ansible.log \
   --entrypoint ansible \
-  tadpol/ansible-playbook "$@"
+  local/ansible-playbook "$@"
