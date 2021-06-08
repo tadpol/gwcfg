@@ -8,10 +8,10 @@
   apt_repository:
     repo: '{{item}}'
   with_items:
-      - deb https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main
-      - deb-src https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main
+      - deb https://deb.nodesource.com/{{ nodejs_version }} {{ ansible_distribution_release }} main
+      - deb-src https://deb.nodesource.com/{{ nodejs_version }} {{ ansible_distribution_release }} main
 
-- name: Install NodeJS 8
+- name: Install NodeJS LTS
   apt:
     state: latest
     pkg:
