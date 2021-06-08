@@ -4,8 +4,9 @@
       url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
       state: present
 
-- name: Add NodeJS repos
-  apt_repository: repo={{item}}
+- name: Add NodeJS Repositories
+  apt_repository:
+    repo: '{{item}}'
   with_items:
       - deb https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main
       - deb-src https://deb.nodesource.com/node_8.x {{ ansible_distribution_release }} main

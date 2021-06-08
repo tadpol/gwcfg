@@ -1,3 +1,5 @@
 - name: restart mosquitto
-  service: name=mosquitto state=restarted
+  service:
+    name: mosquitto
+    state: restarted
 

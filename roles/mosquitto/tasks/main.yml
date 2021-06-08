@@ -6,7 +6,10 @@
       - mosquitto
 
 - name: Enable mosquitto service
-  service: name=mosquitto state=started enabled=yes
+  service:
+    name: mosquitto
+    state: started
+    enabled: yes
 
 - name: Set non-tsl to localhost only
   lineinfile:

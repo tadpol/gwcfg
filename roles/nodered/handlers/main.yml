@@ -1,4 +1,6 @@
 ---
 - name: restart nodered
-  systemd: name=nodered.service state=restarted
+  systemd:
+    name: nodered.service
+    state: restarted
 
