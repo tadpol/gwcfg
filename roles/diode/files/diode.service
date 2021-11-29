@@ -1,0 +1,14 @@
+[Unit]
+Description=Diode blockchain network client
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/diode publish -public 22:22
+Restart=always
+User=diode
+RuntimeMaxSec=86400
+ExecStartPre=/bin/sleep 60
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,44 @@
+---
+# Would be nice if they had deb packages, but in the meantime…
+- name: Install Diode
+  unarchive:
+    creates: /usr/local/bin/diode
+    dest: /usr/local/bin
+    mode: 0755
+    src: https://github.com/diodechain/diode_client/releases/download/v0.12.5/diode_linux_arm64.zip
+    remote_src: yes
+
+# Setup user for Diode to run as.
+- name: Add Diode group
+  group:
+      name: diode
+- name: Add Diode user
+  user:
+      name: diode
+      group: diode
+      shell: /usr/sbin/nologin
+
+# Now start diode and have it start on boot.
+- name: Copy systemd config for diode
+  copy:
+    src: diode.service
+    dest: /lib/systemd/system/diode.service
+
+- name: Run Diode on boot
+  systemd:
+      name: diode.service
+      daemon_reload: yes
+      enabled: yes
+      state: started
+
+- name: Get Client Address
+  become: yes
+  become_user: diode
+  shell: "diode config 2>&1 | awk '/<address>/ { print $(NF) }'"
+  register: diode_config
+
+- name: Display Client Address
+  debug:
+    var: diode_config.stdout
+
+# Maybe register in BNS?
