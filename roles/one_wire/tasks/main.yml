@@ -1,0 +1,14 @@
+---
+- name: Add 1wire overlay
+  lineinfile:
+    path: /boot/config.txt
+    line: dtoverlay=w1-gpio
+    regexp: "^(#\\s*)?dtoverlay=w1-gpio"
+    #dtoverlay=w1-gpio,gpiopin=n
+
+- name: Add 1wire kernel modules
+  community.general.modprobe:
+    name: "{{ item }}"
+  with_items:
+  - w1-gpio
+  - w1-therm
