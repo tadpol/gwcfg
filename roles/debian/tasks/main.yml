@@ -5,17 +5,18 @@
     update_cache: yes
     pkg:
       - acl # Ansible uses setfacl
-      - git
+      - avahi-utils
       - build-essential
-      - python-pip
-      - ruby-dev
-      - python-dev
-      - vim
       - curl
+      - git
       - locales
       - ntpdate
-      - avahi-utils
-      - python
+      - python3
+      - python3-pip
+      - python3-dev
+      - ruby-dev
+      - unzip
+      - vim
 
 - name: Pi specific packages
   when: hardware_class == "raspberrypi"
