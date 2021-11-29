@@ -1,6 +1,6 @@
-FROM alpine:3.9
+FROM alpine:3.15
 
-ENV ANSIBLE_VERSION 2.7.9
+ENV ANSIBLE_VERSION 4.9.0
 
 ENV BUILD_PACKAGES \
   avahi \
@@ -10,14 +10,14 @@ ENV BUILD_PACKAGES \
   openssh-client \
   sshpass \
   git \
-  python \
-  py-boto \
-  py-dateutil \
-  py-httplib2 \
-  py-jinja2 \
-  py-paramiko \
-  py-pip \
-  py-yaml \
+  python3 \
+  py3-boto \
+  py3-dateutil \
+  py3-httplib2 \
+  py3-jinja2 \
+  py3-paramiko \
+  py3-pip \
+  py3-yaml \
   ca-certificates
 
 # If installing ansible@testing
@@ -32,7 +32,7 @@ RUN set -x && \
       musl-dev \
       libffi-dev \
       openssl-dev \
-      python-dev && \
+      python3-dev && \
     \
     echo "==> Upgrading apk and system..."  && \
     apk update && apk upgrade && \
