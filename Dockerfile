@@ -6,10 +6,11 @@ ENV BUILD_PACKAGES \
   avahi \
   bash \
   curl \
-  tar \
+  git \
+  netcat-openbsd \
   openssh-client \
   sshpass \
-  git \
+  tar \
   python3 \
   py3-boto \
   py3-dateutil \
