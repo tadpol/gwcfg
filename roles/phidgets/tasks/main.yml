@@ -1,0 +1,19 @@
+---
+- name: Add Phidgets apt-key
+  apt_key:
+    url: http://www.phidgets.com/gpgkey/pubring.gpg
+    state: present
+
+- name: Add Phidgets repositories
+  apt_repository:
+    repo: deb http://www.phidgets.com/debian {{ ansible_distribution_release }} main
+
+- name: Install Phidgets C library
+  apt:
+    pkg:
+      - libphidget22
+
+- name: Install Phidgets Python Modules
+  pip:
+    name:
+      - Phidget22
