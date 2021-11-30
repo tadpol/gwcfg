@@ -1,0 +1,31 @@
+{
+  "channels": {
+    "one": {
+      "display_name": "Temperature",
+      "description": "It's the temperature",
+      "properties": {
+        "max": 1000,
+        "data_unit": "DEG_CELSIUS",
+        "precision": 4,
+        "data_type": "TEMPERATURE",
+        "min": 0
+      },
+      "protocol_config": {
+        "application": "Simulator",
+        "report_on_change": false,
+        "report_rate": 10000,
+        "sample_rate": 10000,
+        "down_sample": "ACT",
+        "app_specific_config": {
+          "function": "sin_wave",
+          "parameters": {
+            "period": 120,
+            "amplitude": 10,
+            "offset": 100,
+            "precision": 0
+          }
+        }
+      }
+    }
+  }
+}

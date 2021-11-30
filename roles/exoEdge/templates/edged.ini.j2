@@ -1,0 +1,10 @@
+[device]
+murano_host = {{ murano_host }}
+murano_port = {{ murano_port | default('443', true) }}
+murano_id = {{ murano_id }}
+{% if murano_token is defined %}
+murano_token = {{ murano_token }}
+{% endif %}
+
+[edged]
+config_io_file = /etc/exoedge/config_io.json

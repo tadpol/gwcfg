@@ -1,0 +1,59 @@
+---
+- name: Install ExoEdge
+  pip:
+    name:
+      - exoedge
+      - exoedge-simulator
+
+- name: Install Additional ExoEdge Modules
+  when: exoedge_modules is defined
+  pip:
+    name: "{{ exoedge_modules }}"
+
+# Setup user for ExoEdge to run as.
+- name: Add ExoEdge group
+  group:
+      name: exoedge
+- name: Add ExoEdge user
+  user:
+      name: exoedge
+      group: exoedge
+      shell: /usr/sbin/nologin
+
+- name: Make config files directory
+  file:
+    path: /etc/exoedge
+    state: directory
+    owner: exoedge
+    group: exoedge
+    mode: '0755'
+
+# TODO: someday, see if edged.ini exists and contains murano_token, read that value if it does.
+# Then replace file using prior token.
+- name: Copy edged.ini
+  template:
+    src: edged.ini.j2
+    dest: /etc/exoedge/edged.ini
+    backup: yes
+    force: no   # If the file already exists, it likely has a token, so skip.
+    owner: exoedge
+    group: exoedge
+
+- name: Copy config_io.json
+  copy:
+    src: config_io.json
+    dest: /etc/exoedge/config_io.json
+    owner: exoedge
+    group: exoedge
+
+# Now start edged and have it start on boot.
+- name: Copy edged.service
+  copy:
+    src: edged.service
+    dest: /etc/systemd/system/edged.service
+
+- name: ExoEdge Service
+  systemd:
+      name: edged.service
+      enabled: true
+      state: started

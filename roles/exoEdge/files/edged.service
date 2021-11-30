@@ -1,0 +1,12 @@
+[Unit]
+Description=ExoEdge Daemon
+Documentation=https://pypi.org/project/exoedge/ https://community.exosite.com/c/exoedge
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/edged -i /etc/exoedge/edged.ini go
+User=exoedge
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

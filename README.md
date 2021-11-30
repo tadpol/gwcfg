@@ -13,7 +13,7 @@ I don't install ansible on my machine, but instead run it inside a Docker contai
 Things go a lot smoother if you have put public keys in place.
 
 ```sh
-ssh-copy-id -i ~/.id_rsa $NODES
+ssh-copy-id -i ~/.ssh/id_rsa $NODES
 ```
 
 ### Via Docker
@@ -51,3 +51,9 @@ psk="$your_wifi_password"
 - `sudo raspi-config`
 - Change hostname and passwords and resize the filesystem
 - Reboot
+
+### Or using Raspberry Pi Imager
+
+1. Press `⌘⇧X` (or `⌃⇧X` if not Mac) to access the advanced options.
+2. Check ssh box and WiFi setup and change hostname
+3. Write image
