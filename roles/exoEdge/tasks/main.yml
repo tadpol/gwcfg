@@ -2,13 +2,14 @@
 - name: Install ExoEdge
   pip:
     name:
+      - jsonschema==3.2.0
       - exoedge
       - exoedge-simulator
 
-- name: Install Additional ExoEdge Modules
-  when: exoedge_modules is defined
-  pip:
-    name: "{{ exoedge_modules }}"
+# - name: Install Additional ExoEdge Modules
+#   when: exoedge_modules is defined
+#   pip:
+#     name: "{{ exoedge_modules }}"
 
 # Setup user for ExoEdge to run as.
 - name: Add ExoEdge group
