@@ -1,6 +1,7 @@
 [Unit]
 Description=ExoEdge Daemon
 Documentation=https://pypi.org/project/exoedge/ https://community.exosite.com/c/exoedge
+After=network.target
 
 [Service]
 Type=simple
