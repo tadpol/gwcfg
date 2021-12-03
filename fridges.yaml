@@ -1,0 +1,16 @@
+---
+# This sets up the monitoring for refridgerators at work.
+# There are two temperature sensors inside on 1-wire and 
+# loadcells to monitor mass (via phidgets)
+# 
+# All of the details for the fridges are in variables that are in the hosts file.
+- hosts: fridges
+  remote_user: pi
+  become: yes
+  roles:
+  - debian
+  - raspberryPi
+  - one_wire
+  - diode
+  - phidgets
+  - exoEdge

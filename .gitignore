@@ -18,3 +18,5 @@ Pods/
 .Spotlight-V100
 .Trashes
 
+hosts
+hosts*.yaml
