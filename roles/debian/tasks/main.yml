@@ -19,7 +19,9 @@
       - vim
 
 - name: Pi specific packages
-  when: hardware_class == "raspberrypi"
+  when:
+    - hardware_class == "raspberrypi"
+    - ansible_facts['distribution_major_version'] < 11
   apt:
     state: present
     pkg:
