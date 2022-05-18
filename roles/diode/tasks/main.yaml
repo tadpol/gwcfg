@@ -32,7 +32,7 @@
       state: started
 
 - name: Get Client Address
-  become: yes
+  become: true
   become_user: diode
   shell: "diode config 2>&1 | awk '/<address>/ { print $(NF) }'"
   register: diode_config
