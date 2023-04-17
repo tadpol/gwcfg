@@ -1,5 +1,0 @@
----
-ansible_user: pi
-hardware_class: raspberrypi
-hardware_sub: B3
-

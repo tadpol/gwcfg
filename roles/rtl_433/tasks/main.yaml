@@ -1,0 +1,46 @@
+---
+- name: Install rtl_433
+  apt:
+    pkg:
+      - rtl-433
+
+# Setup user for rtl-433 to run as.
+- name: Add rtl-433 group
+  group:
+      name: rtl_sdr
+- name: Add rtl-433 user
+  user:
+      name: rtl_sdr
+      group: rtl_sdr
+      groups: plugdev
+      shell: /usr/sbin/nologin
+
+- name: rtl433 config dir
+  file:
+    path: /etc/rtl_433
+    state: directory
+    mode: 0755
+    group: rtl_sdr
+    owner: rtl_sdr
+
+- name: Copy rtl-433 config file
+  template:
+    src: rtl_433.conf.j2
+    dest: /etc/rtl_433/rtl_433.conf
+    mode: 0640
+    group: rtl_sdr
+    owner: rtl_sdr
+
+# Now enable and have it start on boot.
+- name: Copy systemd config for rtl-433
+  copy:
+    src: rtl433.service
+    dest: /lib/systemd/system/rtl433.service
+
+- name: Run rtl433 on boot
+  systemd:
+      name: rtl433.service
+      daemon_reload: yes
+      enabled: yes
+      state: started
+

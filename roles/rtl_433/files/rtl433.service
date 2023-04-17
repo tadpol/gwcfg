@@ -1,0 +1,14 @@
+[Unit]
+Description=RTL-433 scanner
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rtl_433
+Restart=always
+User=rtl_sdr
+RestartSec=30s
+SyslogIdentifier=rtl_433
+
+[Install]
+WantedBy=multi-user.target

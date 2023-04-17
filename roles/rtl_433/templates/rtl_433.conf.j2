@@ -1,0 +1,15 @@
+# config for rtl_433
+
+device        0
+#frequency     433.92M
+frequency     915M
+
+report_meta level
+report_meta noise
+report_meta stats
+report_meta time:utc
+report_meta protocol
+
+output mqtt://{{ mqtt_host }}:{{ mqtt_port }},user={{ mqtt_user }},pass={{ mqtt_pass }},retain=1
+
+stop_after_successful_events false

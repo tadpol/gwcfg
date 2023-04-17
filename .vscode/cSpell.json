@@ -19,6 +19,7 @@
         "ntpdate",
         "Phidget",
         "Phidgets",
+        "plugdev",
         "raspberrypi",
         "raspi",
         "sbin",
