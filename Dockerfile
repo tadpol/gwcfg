@@ -1,6 +1,6 @@
-FROM alpine:3.15
+FROM alpine:3.17
 
-ENV ANSIBLE_VERSION 4.9.0
+ENV ANSIBLE_VERSION 7.4.0
 
 ENV BUILD_PACKAGES \
   avahi \
@@ -41,7 +41,7 @@ RUN set -x && \
     echo "==> Adding Python runtime..."  && \
     apk add --no-cache ${BUILD_PACKAGES} && \
     pip install --upgrade pip && \
-    pip install python-keyczar docker-py && \
+    pip install python-keyczar docker-py jmespath && \
     \
     echo "==> Installing Ansible..."  && \
     pip install ansible==${ANSIBLE_VERSION} && \
